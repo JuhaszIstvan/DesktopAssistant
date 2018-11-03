@@ -3,6 +3,14 @@
 #installation #sudo zypper install python3-xlib
 #sudo pip install keyboard
 #cd ~/Documents/Code/Python/DesktopAssistant / xhost +
+def getimagelocation(imagepath):
+    import pyautogui
+    print('NFO: Attempting to locate the {}'.format(imagepath))
+    coords=pyautogui.locateCenterOnScreen(imagepath,grayscale=True,minSearchTime=10)
+    if coords is None:
+        raise Exception('ERROR:Failed to find image {} on the screen. Exiting'.format(imagepath))
+        #return None
+    return coords
 def exiting():
     print('Exiting')
 import sys
@@ -90,7 +98,7 @@ def main():
         print('SUCCESS: The NewWindow.png \'s coordinates are:',coords)
         pyautogui.click(coords)
         time.sleep(10)
-        coords=pyautogui.locateCenterOnScreen('https.png',grayscale=True,minSearchTime=10)
+        coords=pyautogui.locateCenterOnScreen('http.png',grayscale=True,minSearchTime=10)
         if coords is None:
             pyautogui.rightClick()
             pyautogui.press('apps')
@@ -98,22 +106,38 @@ def main():
         print('SUCCESS: The https.png \'s coordinates are:',coords)
         pyautogui.doubleClick(coords)
         import pyperclip
-        pyperclip.copy(R"http://www.mnb.hu/Jegybanki_alapkamat_alakulasa")
+        pyperclip.copy(R"http://www.mnb.hu/arfolyamok")
         #type_unicode("http://www.mnb.hu/Jegybanki_alapkamat_alakulasa")
         pyautogui.hotkey("ctrl", "v")
         pyautogui.press('enter')
-        time.sleep(10)
-        coords=pyautogui.locateCenterOnScreen('AlapKamatLekerese.png',grayscale=True,minSearchTime=10)
-        if coords is None:
-            raise Exception('ERROR:Failed to find image "AlapKamatLekerese.png" on the screen. Exiting')
-        print('SUCCESS: The AlapKamatLekerese.png \'s coordinates are:',coords)
+        time.sleep(3)
+        pyautogui.hotkey("ctrl", "f")
+        pyperclip.copy(R"Forintban kifejezett érték")
+        pyautogui.hotkey("ctrl", "v")
+        pyautogui.press('esc')
+        pyautogui.moveRel(yOffset=50)
+        pyautogui.doubleClick
+        coords=getimagelocation('forintertek.png')
+        a=coords[1]
+        pyautogui.hotkey("ctrl", "f")
+        pyperclip.copy(R"svájci frank")
+        pyautogui.hotkey("ctrl", "v")
+        pyautogui.press('esc')
+        pyautogui.doubleClick
+        coords=getimagelocation('svajci.png')
+        b=coords[0]
+        pyautogui.moveTo(a,b)
+        time.sleep(5)
+        #coords=pyautogui.locateCenterOnScreen('AlapKamatLekerese.png',grayscale=True,minSearchTime=10)
+        #if coords is None:
+        #    raise Exception('ERROR:Failed to find image "AlapKamatLekerese.png" on the screen. Exiting')
+        #print('SUCCESS: The AlapKamatLekerese.png \'s coordinates are:',coords)
 
         pyautogui.press('apps')
         time.sleep(10)
         print("The execution had been completed")
     except Exception as err:
         print('An exception happened: ', sys.exc_info()[:3])
-
 if __name__ == '__main__':
     main()
     sys.exit(0)
